@@ -1,0 +1,34 @@
+
+{
+    "version": "2021-02-05",
+    "environment": {
+        "runtime": "python3.11",
+        "requirements": [
+            "boxsdk==3.9.2",
+            "openpyxl==3.1.2",
+            "Jinja2==3.1.3",
+            "simple-salesforce==1.12.5",
+            "jira==3.8.0",
+            "hcl==3.0.*"
+        ],
+        "showCommitToastMessage": false
+    },
+    "edges": [],
+    "nodes": [
+        {
+            "id": "uuid4",
+            "kind": "script",
+            "name": "Script",
+            "config": {
+                "cells": []
+            },
+            "position": {
+                "x": 0,
+                "y": 0
+            },
+            "timestamp": 0,
+            "libraryNodeId": "script-id"
+        }
+    ],
+    "variables": []
+}
