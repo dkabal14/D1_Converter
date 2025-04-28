@@ -10,7 +10,7 @@ HB_TO_PY = 1
 HB_TO_IPYNB = 2
 IPYNB_TO_HB = 3
 DEBUG_MODE = False
-root_dir = os.environ.get('USERPROFILE')
+root_dir = os.path.dirname(os.path.abspath(__file__))
 default_title = "Quality Digital - Ferramentas de Conversão para o Diligent One"
 
 def to_path_linux(path):
@@ -36,7 +36,7 @@ def choose_file_1():
         else:
             raise Exception('É necessário escolher um tipo de conversão!')
         # TODO: Adicionar checagem se o json escolhido é de fato um arquivo válido para a conversão
-        file_name = filedialog.askopenfilename(filetypes=file_type, initialdir=root_dir)
+        file_name = filedialog.askopenfilename(filetypes=file_type, initialdir=os.environ['USERPROFILE'], defaultextension=file_type[0][1])
         if file_name != '':
             root.Entry1.delete(0, END)
             root.Entry1.insert(0, to_path_windows(file_name))
@@ -54,12 +54,16 @@ def choose_file_2():
             file_type = [('Robô Highbond', '*.json')]
         else:
             raise Exception('É necessário escolher um tipo de conversão!')
-        
-        file_name = filedialog.asksaveasfilename(filetypes=file_type, initialdir=root_dir, defaultextension=file_type[0][1])
+        if root.Entry1.get() != '':
+            initd = os.path.dirname(root.Entry1.get())
+            initf = f'{".".join(os.path.basename(root.Entry1.get()).split(".")[:-1])}'
+            file_name = filedialog.asksaveasfilename(filetypes=file_type, initialdir=initd, defaultextension=file_type[0][1], initialfile=initf)
+        else:
+            file_name = filedialog.asksaveasfilename(filetypes=file_type, initialdir=os.environ['USERPROFILE'], defaultextension=file_type[0][1])
         # TODO: Adicionar checagem se o json escolhido é de fato um arquivo válido para a conversão
         if file_name != '':
             root.Entry2.delete(0, END)
-            root.Entry2.insert(0, file_name)
+            root.Entry2.insert(0, to_path_windows(file_name))
         
     except Exception as e:
         messagebox.showwarning("Atenção!", f"{e}")
@@ -70,8 +74,8 @@ def clearEntry():
 
 def runMainVoid():
     try:
-        i_file = root.Entry1.get()
-        o_file = root.Entry2.get()
+        i_file = to_path_linux(root.Entry1.get())
+        o_file = to_path_linux(root.Entry2.get())
 
         if not bool(i_file) and not bool(o_file):
             raise Exception("Os arquivos de origem e destino precisam estar preenchidos!")
