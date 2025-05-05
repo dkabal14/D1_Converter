@@ -11,7 +11,7 @@ HB_TO_IPYNB = 2
 IPYNB_TO_HB = 3
 DEBUG_MODE = False
 root_dir = os.path.dirname(os.path.abspath(__file__))
-default_title = "Quality Digital - Ferramentas de Conversão para o Diligent One"
+default_title = "Quality Digital - Ferramentas de Conversão para o Diligent One - Versão de Homologação"
 
 def to_path_linux(path):
     """
@@ -279,5 +279,18 @@ root.Button3.configure(highlightbackground="#d9d9d9")
 root.Button3.configure(highlightcolor="#000000")
 root.Button3.configure(text='''Executar!''')
 root.Button3.configure(command=runMainVoid)
+
+if DEBUG_MODE:
+    root.Button4 = tk.Button(root)
+    root.Button4.place(relx=0.020, rely=0.737, height=26, width=120)
+    root.Button4.configure(activebackground="#d9d9d9")
+    root.Button4.configure(activeforeground="black")
+    root.Button4.configure(background="#d9d9d9")
+    root.Button4.configure(disabledforeground="#a3a3a3")
+    root.Button4.configure(foreground="#000000")
+    root.Button4.configure(highlightbackground="#d9d9d9")
+    root.Button4.configure(highlightcolor="#000000")
+    root.Button4.configure(text='''Variáveis''')
+    # root.Button4.configure(command=runMainVoid)
 
 root.mainloop()
