@@ -123,8 +123,7 @@ root.iconbitmap(f"{root_dir}/img/quality.ico")
 
 root.rdbtn = tk.IntVar()
 
-root.TSizegrip1 = ttk.Sizegrip(root)
-root.TSizegrip1.place(anchor='se', relx=1.0, rely=1.0)
+
 
 root.Label1 = tk.Label(root)
 root.Label1.place(relx=0.017, rely=0.105, height=21, width=191)
