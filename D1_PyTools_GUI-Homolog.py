@@ -68,7 +68,7 @@ def choose_file_2():
     except Exception as e:
         messagebox.showwarning("Atenção!", f"{e}")
 
-def clearEntry():
+def clear_entries():
     root.Entry1.delete(0, END)
     root.Entry2.delete(0, END)
 
@@ -207,7 +207,7 @@ root.Radiobutton1.configure(text='''HB-JSON -> Python''')
 root.Radiobutton1.configure(underline="-100")
 root.Radiobutton1.configure(variable=root.rdbtn)
 root.Radiobutton1.configure(value=HB_TO_PY)
-root.Radiobutton1.configure(command=clearEntry)
+root.Radiobutton1.configure(command=clear_entries)
 
 root.Radiobutton2 = tk.Radiobutton(root)
 root.Radiobutton2.place(relx=0.017, rely=0.368, relheight=0.132, relwidth=0.322)
@@ -227,7 +227,7 @@ root.Radiobutton2.configure(text='''HB-JSON -> Jupyter Notebook''')
 root.Radiobutton2.configure(underline="-100")
 root.Radiobutton2.configure(variable=root.rdbtn)
 root.Radiobutton2.configure(value=HB_TO_IPYNB)
-root.Radiobutton2.configure(command=clearEntry)
+root.Radiobutton2.configure(command=clear_entries)
 
 root.Radiobutton3 = tk.Radiobutton(root)
 root.Radiobutton3.place(relx=0.017, rely=0.526, relheight=0.132, relwidth=0.322)
@@ -247,7 +247,7 @@ root.Radiobutton3.configure(text='''Jupyter Notebook -> HB-JSON''')
 root.Radiobutton3.configure(underline="-100")
 root.Radiobutton3.configure(variable=root.rdbtn)
 root.Radiobutton3.configure(value=IPYNB_TO_HB)
-root.Radiobutton3.configure(command=clearEntry)
+root.Radiobutton3.configure(command=clear_entries)
 
 root.TLabel1 = ttk.Label(root)
 root.TLabel1.place(relx=0.432, rely=0.105, height=17, width=158)
