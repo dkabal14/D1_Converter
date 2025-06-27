@@ -5,6 +5,7 @@ from tkinter.constants import END
 import os
 import subprocess
 from typing import Literal
+import uuid
 
 class D1Converter:
     def __init__(self, title, experimental=False):
@@ -375,6 +376,7 @@ class D1Converter:
         # Configurações do botão de adicionar
         self.vars_window.add_button = tk.Button(self.vars_window.buttons_frame, text='Adicionar Variável')
         self.vars_window.add_button.pack(side=tk.RIGHT, padx=5, pady=5)
+        self.vars_window.add_button.configure(command=self.add_var_form)
 
         # Configurações do botão de editar
         self.vars_window.edit_button = tk.Button(self.vars_window.buttons_frame, text='Editar Variável')
@@ -384,24 +386,272 @@ class D1Converter:
         self.vars_window.remove_button = tk.Button(self.vars_window.buttons_frame, text='Remover Variável')
         self.vars_window.remove_button.pack(side=tk.RIGHT, padx=5, pady=5)
 
-    def add_edit_form(self, action: Literal['add', 'edit']):
-        # self.add_edit_window = tk.Tk()
+    def add_var_form(self):
+        self.add_var_window = tk.Tk()
+            # variáveis
+            # {
+            #    "id": "b60eee3e-523b-42c8-87a7-cd81a3cad55f",
+            #    "name": "v_hb_token",
+            #    "type": "password",
+            #    "value": "",
+            #    "isReadOnly": false,
+            #    "isTaskInput": true,
+            #    "taskInputLabel": "Insira seu Token do Diligent One",
+            #    "taskInputDescription": "",
+            #    "isTaskInputValueOptional": false
+            # }
+        # Configurações Principais
+        window_width = 450
+        window_height = 350
+        self.add_var_window.geometry(f"{window_width}x{window_height}")
+        self.add_var_window.minsize(120, 1)
+        self.add_var_window.maxsize(1370, 749)
+        self.add_var_window.resizable(1,  1)
+        self.add_var_window.title("Variáveis do D1")
+        self.add_var_window.configure(background="#d9d9d9")
+        self.add_var_window.configure(highlightbackground="#d9d9d9")
+        self.add_var_window.configure(highlightcolor="#000000")
+        self.add_var_window.iconbitmap(f"{self.root_dir}/img/quality.ico")
+        self.add_var_window.TSizegrip1 = ttk.Sizegrip(self.add_var_window)
+        self.add_var_window.TSizegrip1.place(anchor='se', relx=1.0, rely=1.0)
 
-        # # Configurações Principais
-        # self.add_edit_window.geometry("600x400")
-        # self.add_edit_window.minsize(120, 1)
-        # self.add_edit_window.maxsize(1370, 749)
-        # self.add_edit_window.resizable(1,  1)
-        # self.add_edit_window.title("Variáveis do D1")
-        # self.add_edit_window.configure(background="#d9d9d9")
-        # self.add_edit_window.configure(highlightbackground="#d9d9d9")
-        # self.add_edit_window.configure(highlightcolor="#000000")
-        # self.add_edit_window.iconbitmap(f"{self.root_dir}/img/quality.ico")
-        # self.add_edit_window.TSizegrip1 = ttk.Sizegrip(self.add_edit_window)
-        # self.add_edit_window.TSizegrip1.place(anchor='se', relx=1.0, rely=1.0)
-        pass
-    # def add_var(self):
-    #     ...
+        fixed_label_widths = 160
+        fixed_entry_widths = 200
+        fixed_x_position_labels = 20/window_width
+        fixed_x_position_entries = 200/window_width
+
+        curr_y_position = 0.060
+        y_position_iteration = 0.100
+
+        self.add_var_window.Label1 = tk.Label(self.add_var_window)
+        self.add_var_window.Label1.place(relx=fixed_x_position_labels, rely=curr_y_position, height=30, width=fixed_label_widths)
+        self.add_var_window.Label1.configure(activebackground="#d9d9d9")
+        self.add_var_window.Label1.configure(activeforeground="black")
+        self.add_var_window.Label1.configure(anchor='e')
+        self.add_var_window.Label1.configure(background="#d9d9d9")
+        self.add_var_window.Label1.configure(compound='left')
+        self.add_var_window.Label1.configure(disabledforeground="#a3a3a3")
+        self.add_var_window.Label1.configure(font="-family {Segoe UI} -size 9")
+        self.add_var_window.Label1.configure(foreground="#000000")
+        self.add_var_window.Label1.configure(highlightbackground="#d9d9d9")
+        self.add_var_window.Label1.configure(highlightcolor="#000000")
+        self.add_var_window.Label1.configure(justify='right')
+        self.add_var_window.Label1.configure(text='Nome da Variável:')
+
+        self.add_var_window.Entry1 = tk.Entry(self.add_var_window)
+        self.add_var_window.Entry1.place(relx=fixed_x_position_entries, rely=curr_y_position, height=30, width=fixed_entry_widths)
+        self.add_var_window.Entry1.configure(background="white")
+        self.add_var_window.Entry1.configure(disabledforeground="#a3a3a3")
+        self.add_var_window.Entry1.configure(font="-family {Courier New} -size 10")
+        self.add_var_window.Entry1.configure(foreground="#000000")
+        self.add_var_window.Entry1.configure(highlightbackground="#d9d9d9")
+        self.add_var_window.Entry1.configure(highlightcolor="#000000")
+        self.add_var_window.Entry1.configure(insertbackground="#000000")
+        self.add_var_window.Entry1.configure(selectbackground="#d9d9d9")
+        self.add_var_window.Entry1.configure(selectforeground="black")
+        
+        curr_y_position += y_position_iteration
+        self.add_var_window.Label2 = tk.Label(self.add_var_window)
+        self.add_var_window.Label2.place(relx=fixed_x_position_labels, rely=curr_y_position, height=30, width=fixed_label_widths)
+        self.add_var_window.Label2.configure(activebackground="#d9d9d9")
+        self.add_var_window.Label2.configure(activeforeground="black")
+        self.add_var_window.Label2.configure(anchor='e')
+        self.add_var_window.Label2.configure(background="#d9d9d9")
+        self.add_var_window.Label2.configure(compound='left')
+        self.add_var_window.Label2.configure(disabledforeground="#a3a3a3")
+        self.add_var_window.Label2.configure(font="-family {Segoe UI} -size 9")
+        self.add_var_window.Label2.configure(foreground="#000000")
+        self.add_var_window.Label2.configure(highlightbackground="#d9d9d9")
+        self.add_var_window.Label2.configure(highlightcolor="#000000")
+        self.add_var_window.Label2.configure(text='Tipo da Variável:')
+
+        self.add_var_window.Combo2 = ttk.Combobox(self.add_var_window, state="readonly")
+        self.add_var_window.Combo2.place(relx=fixed_x_position_entries, rely=curr_y_position, height=30, width=180)
+        self.add_var_window.Combo2.configure(font="-family {Segoe UI} -size 9")
+        self.add_var_window.Combo2['values'] = ("Texto", "Senha")
+        self.add_var_window.Combo2.current(0)
+
+        curr_y_position += y_position_iteration
+        self.add_var_window.Label3 = tk.Label(self.add_var_window)
+        self.add_var_window.Label3.place(relx=fixed_x_position_labels, rely=curr_y_position, height=30, width=fixed_label_widths)
+        self.add_var_window.Label3.configure(activebackground="#d9d9d9")
+        self.add_var_window.Label3.configure(activeforeground="black")
+        self.add_var_window.Label3.configure(anchor='e')
+        self.add_var_window.Label3.configure(background="#d9d9d9")
+        self.add_var_window.Label3.configure(compound='left')
+        self.add_var_window.Label3.configure(disabledforeground="#a3a3a3")
+        self.add_var_window.Label3.configure(font="-family {Segoe UI} -size 9")
+        self.add_var_window.Label3.configure(foreground="#000000")
+        self.add_var_window.Label3.configure(highlightbackground="#d9d9d9")
+        self.add_var_window.Label3.configure(highlightcolor="#000000")
+        self.add_var_window.Label3.configure(text='Valor da Variável:')
+
+        self.add_var_window.Entry3 = tk.Entry(self.add_var_window)
+        self.add_var_window.Entry3.place(relx=fixed_x_position_entries, rely=curr_y_position, height=30, width=fixed_entry_widths)
+        self.add_var_window.Entry3.configure(background="white")
+        self.add_var_window.Entry3.configure(disabledforeground="#a3a3a3")
+        self.add_var_window.Entry3.configure(font="-family {Courier New} -size 10")
+        self.add_var_window.Entry3.configure(foreground="#000000")
+        self.add_var_window.Entry3.configure(highlightbackground="#d9d9d9")
+        self.add_var_window.Entry3.configure(highlightcolor="#000000")
+        self.add_var_window.Entry3.configure(insertbackground="#000000")
+        self.add_var_window.Entry3.configure(selectbackground="#d9d9d9")
+        self.add_var_window.Entry3.configure(selectforeground="black")
+
+        curr_y_position += y_position_iteration
+        self.add_var_window.Label4 = tk.Label(self.add_var_window)
+        self.add_var_window.Label4.place(relx=fixed_x_position_labels, rely=curr_y_position, height=30, width=fixed_label_widths)
+        self.add_var_window.Label4.configure(activebackground="#d9d9d9")
+        self.add_var_window.Label4.configure(activeforeground="black")
+        self.add_var_window.Label4.configure(anchor='e')
+        self.add_var_window.Label4.configure(background="#d9d9d9")
+        self.add_var_window.Label4.configure(compound='left')
+        self.add_var_window.Label4.configure(disabledforeground="#a3a3a3")
+        self.add_var_window.Label4.configure(font="-family {Segoe UI} -size 9")
+        self.add_var_window.Label4.configure(foreground="#000000")
+        self.add_var_window.Label4.configure(highlightbackground="#d9d9d9")
+        self.add_var_window.Label4.configure(highlightcolor="#000000")
+        self.add_var_window.Label4.configure(text='Somente Leitura?')
+
+        self.add_var_window.CheckButton4 = tk.Checkbutton(self.add_var_window)
+        self.add_var_window.CheckButton4.place(relx=fixed_x_position_entries, rely=curr_y_position, height=30, width=20)
+        self.add_var_window.CheckButton4.configure(background="#d9d9d9")
+        self.add_var_window.CheckButton4.configure(disabledforeground="#a3a3a3")
+        self.add_var_window.CheckButton4.configure(font="-family {Courier New} -size 10")
+        self.add_var_window.CheckButton4.configure(foreground="#000000")
+        self.add_var_window.CheckButton4.configure(highlightbackground="#d9d9d9")
+        self.add_var_window.CheckButton4.configure(highlightcolor="#000000")
+
+        curr_y_position += y_position_iteration
+        self.add_var_window.Label5 = tk.Label(self.add_var_window)
+        self.add_var_window.Label5.place(relx=fixed_x_position_labels, rely=curr_y_position, height=30, width=fixed_label_widths)
+        self.add_var_window.Label5.configure(activebackground="#d9d9d9")
+        self.add_var_window.Label5.configure(activeforeground="black")
+        self.add_var_window.Label5.configure(anchor='e')
+        self.add_var_window.Label5.configure(background="#d9d9d9")
+        self.add_var_window.Label5.configure(compound='left')
+        self.add_var_window.Label5.configure(disabledforeground="#a3a3a3")
+        self.add_var_window.Label5.configure(font="-family {Segoe UI} -size 9")
+        self.add_var_window.Label5.configure(foreground="#000000")
+        self.add_var_window.Label5.configure(highlightbackground="#d9d9d9")
+        self.add_var_window.Label5.configure(highlightcolor="#000000")
+        self.add_var_window.Label5.configure(text='É um Parâmetro do Robô?')
+
+        self.add_var_window.is_task_input_var = tk.BooleanVar()
+        self.add_var_window.CheckButton5 = tk.Checkbutton(self.add_var_window)
+        self.add_var_window.CheckButton5.place(relx=fixed_x_position_entries, rely=curr_y_position, height=30, width=20)
+        self.add_var_window.CheckButton5.configure(background="#d9d9d9")
+        self.add_var_window.CheckButton5.configure(disabledforeground="#a3a3a3")
+        self.add_var_window.CheckButton5.configure(font="-family {Courier New} -size 10")
+        self.add_var_window.CheckButton5.configure(foreground="#000000")
+        self.add_var_window.CheckButton5.configure(highlightbackground="#d9d9d9")
+        self.add_var_window.CheckButton5.configure(highlightcolor="#000000")
+        self.add_var_window.CheckButton5.configure(variable=self.add_var_window.is_task_input_var)
+
+        curr_y_position += y_position_iteration
+        self.add_var_window.Label6 = tk.Label(self.add_var_window)
+        self.add_var_window.Label6.place(relx=fixed_x_position_labels, rely=curr_y_position, height=30, width=fixed_label_widths)
+        self.add_var_window.Label6.configure(activebackground="#d9d9d9")
+        self.add_var_window.Label6.configure(activeforeground="black")
+        self.add_var_window.Label6.configure(anchor='e')
+        self.add_var_window.Label6.configure(background="#d9d9d9")
+        self.add_var_window.Label6.configure(compound='left')
+        self.add_var_window.Label6.configure(disabledforeground="#a3a3a3")
+        self.add_var_window.Label6.configure(font="-family {Segoe UI} -size 9")
+        self.add_var_window.Label6.configure(foreground="#000000")
+        self.add_var_window.Label6.configure(highlightbackground="#d9d9d9")
+        self.add_var_window.Label6.configure(highlightcolor="#000000")
+        self.add_var_window.Label6.configure(text='Nome do Parâmetro:')
+
+        self.add_var_window.Entry6 = tk.Entry(self.add_var_window)
+        self.add_var_window.Entry6.place(relx=fixed_x_position_entries, rely=curr_y_position, height=30, width=fixed_entry_widths)
+        self.add_var_window.Entry6.configure(background="white")
+        self.add_var_window.Entry6.configure(disabledforeground="#a3a3a3")
+        self.add_var_window.Entry6.configure(font="-family {Courier New} -size 10")
+        self.add_var_window.Entry6.configure(foreground="#000000")
+        self.add_var_window.Entry6.configure(highlightbackground="#d9d9d9")
+        self.add_var_window.Entry6.configure(highlightcolor="#000000")
+        self.add_var_window.Entry6.configure(insertbackground="#000000")
+        self.add_var_window.Entry6.configure(selectbackground="#d9d9d9")
+        self.add_var_window.Entry6.configure(selectforeground="black")
+        self.add_var_window.Entry6.configure(state="disabled")
+
+        curr_y_position += y_position_iteration
+        self.add_var_window.Label7 = tk.Label(self.add_var_window)
+        self.add_var_window.Label7.place(relx=fixed_x_position_labels, rely=curr_y_position, height=30, width=fixed_label_widths)
+        self.add_var_window.Label7.configure(activebackground="#d9d9d9")
+        self.add_var_window.Label7.configure(activeforeground="black")
+        self.add_var_window.Label7.configure(anchor='e')
+        self.add_var_window.Label7.configure(background="#d9d9d9")
+        self.add_var_window.Label7.configure(compound='left')
+        self.add_var_window.Label7.configure(disabledforeground="#a3a3a3")
+        self.add_var_window.Label7.configure(font="-family {Segoe UI} -size 9")
+        self.add_var_window.Label7.configure(foreground="#000000")
+        self.add_var_window.Label7.configure(highlightbackground="#d9d9d9")
+        self.add_var_window.Label7.configure(highlightcolor="#000000")
+        self.add_var_window.Label7.configure(text='Descrição do Parâmetro:')
+
+        self.add_var_window.Entry7 = tk.Entry(self.add_var_window)
+        self.add_var_window.Entry7.place(relx=fixed_x_position_entries, rely=curr_y_position, height=30, width=fixed_entry_widths)
+        self.add_var_window.Entry7.configure(background="white")
+        self.add_var_window.Entry7.configure(disabledforeground="#706f6f")
+        self.add_var_window.Entry7.configure(font="-family {Courier New} -size 10")
+        self.add_var_window.Entry7.configure(foreground="#000000")
+        self.add_var_window.Entry7.configure(highlightbackground="#d9d9d9")
+        self.add_var_window.Entry7.configure(highlightcolor="#000000")
+        self.add_var_window.Entry7.configure(insertbackground="#000000")
+        self.add_var_window.Entry7.configure(selectbackground="#d9d9d9")
+        self.add_var_window.Entry7.configure(selectforeground="black")
+        self.add_var_window.Entry7.configure(state="disabled")
+
+
+        curr_y_position += y_position_iteration
+        self.add_var_window.Label8 = tk.Label(self.add_var_window)
+        self.add_var_window.Label8.place(relx=fixed_x_position_labels, rely=curr_y_position, height=30, width=fixed_label_widths)
+        self.add_var_window.Label8.configure(activebackground="#d9d9d9")
+        self.add_var_window.Label8.configure(activeforeground="black")
+        self.add_var_window.Label8.configure(anchor='e')
+        self.add_var_window.Label8.configure(background="#d9d9d9")
+        self.add_var_window.Label8.configure(compound='left')
+        self.add_var_window.Label8.configure(disabledforeground="#a3a3a3")
+        self.add_var_window.Label8.configure(font="-family {Segoe UI} -size 9")
+        self.add_var_window.Label8.configure(foreground="#000000")
+        self.add_var_window.Label8.configure(highlightbackground="#d9d9d9")
+        self.add_var_window.Label8.configure(highlightcolor="#000000")
+        self.add_var_window.Label8.configure(text='Parâmetro Opcional?')
+
+        self.add_var_window.CheckButton8 = tk.Checkbutton(self.add_var_window)
+        self.add_var_window.CheckButton8.place(relx=fixed_x_position_entries, rely=curr_y_position, height=30, width=20)
+        self.add_var_window.CheckButton8.configure(background="#d9d9d9")
+        self.add_var_window.CheckButton8.configure(disabledforeground="#706f6f")
+        self.add_var_window.CheckButton8.configure(font="-family {Courier New} -size 10")
+        self.add_var_window.CheckButton8.configure(foreground="#000000")
+        self.add_var_window.CheckButton8.configure(highlightbackground="#d9d9d9")
+        self.add_var_window.CheckButton8.configure(highlightcolor="#000000")
+        self.add_var_window.CheckButton8.configure(state="disabled")
+
+        curr_y_position += y_position_iteration
+        self.add_var_window.Button1 = tk.Button(self.add_var_window)
+        self.add_var_window.Button1.place(relx=120/window_width, rely=curr_y_position, height=30, width=100)
+        self.add_var_window.Button1.configure(activebackground="#d9d9d9")
+        self.add_var_window.Button1.configure(activeforeground="black")
+        self.add_var_window.Button1.configure(background="#d9d9d9")
+        self.add_var_window.Button1.configure(disabledforeground="#a3a3a3")
+        self.add_var_window.Button1.configure(foreground="#000000")
+        self.add_var_window.Button1.configure(highlightbackground="#d9d9d9")
+        self.add_var_window.Button1.configure(highlightcolor="#000000")
+        self.add_var_window.Button1.configure(text='Salvar')
+
+        self.add_var_window.Button1 = tk.Button(self.add_var_window)
+        self.add_var_window.Button1.place(relx=230/window_width, rely=curr_y_position, height=30, width=100)
+        self.add_var_window.Button1.configure(activebackground="#d9d9d9")
+        self.add_var_window.Button1.configure(activeforeground="black")
+        self.add_var_window.Button1.configure(background="#d9d9d9")
+        self.add_var_window.Button1.configure(disabledforeground="#a3a3a3")
+        self.add_var_window.Button1.configure(foreground="#000000")
+        self.add_var_window.Button1.configure(highlightbackground="#d9d9d9")
+        self.add_var_window.Button1.configure(highlightcolor="#000000")
+        self.add_var_window.Button1.configure(text='Cancelar')
 
 if __name__ == "__main__":
     d1c = D1Converter(title="Ferramenta de Conversão do D1 - v0.0.4", experimental=True)
