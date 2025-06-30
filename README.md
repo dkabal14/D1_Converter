@@ -190,7 +190,7 @@ if not LOCAL:
     #Adicionar todos módulos manualmente
     import sklearn
 
-
+```
 2. Segunda abordagem - requirements.txt
 
 
@@ -204,3 +204,4 @@ if not LOCAL:
 
     #Adicionar todos módulos manualmente
     import sklearn
+```
