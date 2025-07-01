@@ -81,11 +81,13 @@ class D1Converter:
 
         except Exception as e:
             messagebox.showwarning("Atenção!", f"{e}")
-    
+
+    # def vars_window
+
     def clear_entries(self):
         self.main_window.Entry1.delete(0, END)
         self.main_window.Entry2.delete(0, END)
-    
+
     def run_conversion(self):
         try:
             i_file = self.to_path_linux(self.main_window.Entry1.get())
@@ -124,12 +126,29 @@ class D1Converter:
         except Exception as e:
             messagebox.showwarning("Atenção", e)
 
-    def main_window(self):
+    def add_var_window_close_button(self):
+        self.add_var_window.destroy()
+
+    def add_var_window_save_button(self):
+        pass
+
+    def add_var_window_input_properties_toggle(self):
+        if self.add_var_window.is_task_input.get():
+            self.add_var_window.Entry6.configure(state='normal')
+            self.add_var_window.Entry7.configure(state='normal')
+            self.add_var_window.CheckButton8.configure(state='normal')
+        else:
+            self.add_var_window.Entry6.configure(state='readonly', readonlybackground='lightgray')
+            self.add_var_window.Entry7.configure(state='readonly', readonlybackground='lightgray')
+            self.add_var_window.is_optional_value.set(False)
+            self.add_var_window.CheckButton8.configure(state='disabled')
+
+    def main_window_show(self):
         self.main_window = tk.Tk()
 
         # Configurações Principais
         self.main_window.geometry("600x170+300+150")
-        self.main_window.minsize(120, 1)
+        self.main_window.minsize(300, 200)
         self.main_window.maxsize(1370, 749)
         self.main_window.resizable(1,  1)
         self.main_window.title(self.default_title)
@@ -325,13 +344,16 @@ class D1Converter:
         self.main_window.mainloop()
 
     def vars_window(self):
-        self.vars_window = tk.Tk()
+        
+        self.vars_window = tk.Toplevel(master=self.main_window)
+
+        self.vars_window.is_json_loaded = tk.BooleanVar()
 
         # Configurações Principais
         self.vars_window.geometry("800x300")
-        self.vars_window.minsize(120, 1)
+        self.vars_window.minsize(360, 120)
         self.vars_window.maxsize(1370, 749)
-        self.vars_window.resizable(1,  1)
+        self.vars_window.resizable(1, 1)
         self.vars_window.title("Variáveis do D1")
         self.vars_window.configure(background="#d9d9d9")
         self.vars_window.configure(highlightbackground="#d9d9d9")
@@ -350,7 +372,7 @@ class D1Converter:
         self.vars_window.tree.column('name', anchor='w', width=50)
         self.vars_window.tree.heading('type', text='Tipo')
         self.vars_window.tree.column('type', anchor='w', width=50)
-        self.vars_window.tree.heading('taskInputLabel', text='Label')
+        self.vars_window.tree.heading('taskInputLabel', text='Nome do Parâmetro')
         self.vars_window.tree.column('taskInputLabel', anchor='w', width=50)
         self.vars_window.tree.heading('value', text='Valor')
         self.vars_window.tree.column('value', anchor='w', width=50)
@@ -361,45 +383,43 @@ class D1Converter:
         self.vars_window.buttons_frame = tk.Frame(self.vars_window)
         self.vars_window.buttons_frame.pack(fill=tk.X, padx=5, pady=5)
 
-        # Configurações do botão de criar
-        self.vars_window.create_button = tk.Button(self.vars_window.buttons_frame, text='Criar JSON')
-        self.vars_window.create_button.pack(side=tk.LEFT, padx=5, pady=5)
+        # Configurações do botão de criar json
+        self.vars_window.create_json_button = tk.Button(self.vars_window.buttons_frame, text='Criar JSON')
+        self.vars_window.create_json_button.pack(side=tk.LEFT, padx=5, pady=5)
+        # self.vars_window.create_json_button.configure(command=self.create_json_form)
 
-        # Configurações do botão de carregar
-        self.vars_window.load_button = tk.Button(self.vars_window.buttons_frame, text='Carregar JSON')
-        self.vars_window.load_button.pack(side=tk.LEFT, padx=5, pady=5)
+        # Configurações do botão de carregar json
+        self.vars_window.load_json_button = tk.Button(self.vars_window.buttons_frame, text='Carregar JSON')
+        self.vars_window.load_json_button.pack(side=tk.LEFT, padx=5, pady=5)
+        # self.vars_window.load_json_button.configure(command=self.load_json_form)
 
-        # Configurações do botão de salvar
-        self.vars_window.save_button = tk.Button(self.vars_window.buttons_frame, text='Salvar JSON')
-        self.vars_window.save_button.pack(side=tk.LEFT, padx=5, pady=5)
+        # Configurações do botão de salvar json
+        self.vars_window.save_json_button = tk.Button(self.vars_window.buttons_frame, text='Salvar JSON')
+        self.vars_window.save_json_button.pack(side=tk.LEFT, padx=5, pady=5)
+        # self.vars_window.save_json_button.configure(command=self.save_json_form) # TODO
+        self.vars_window.save_json_button.configure(state='disabled')
 
-        # Configurações do botão de adicionar
-        self.vars_window.add_button = tk.Button(self.vars_window.buttons_frame, text='Adicionar Variável')
-        self.vars_window.add_button.pack(side=tk.RIGHT, padx=5, pady=5)
-        self.vars_window.add_button.configure(command=self.add_var_form)
+        # Configurações do botão de adicionar variável
+        self.vars_window.add_var_button = tk.Button(self.vars_window.buttons_frame, text='Adicionar Variável')
+        self.vars_window.add_var_button.pack(side=tk.RIGHT, padx=5, pady=5)
+        # self.vars_window.add_var_button.configure(command=self.add_var_form) # TODO
+        self.vars_window.add_var_button.configure(state='disabled')
 
-        # Configurações do botão de editar
-        self.vars_window.edit_button = tk.Button(self.vars_window.buttons_frame, text='Editar Variável')
-        self.vars_window.edit_button.pack(side=tk.RIGHT, padx=5, pady=5)
+        # Configurações do botão de editar variável
+        self.vars_window.edit_var_button = tk.Button(self.vars_window.buttons_frame, text='Editar Variável')
+        self.vars_window.edit_var_button.pack(side=tk.RIGHT, padx=5, pady=5)
+        # self.vars_window.edit_var_button.configure(command=self.edit_var_form) # TODO
+        self.vars_window.edit_var_button.configure(state='disabled')
 
-        # Configurações do botão de remover
-        self.vars_window.remove_button = tk.Button(self.vars_window.buttons_frame, text='Remover Variável')
-        self.vars_window.remove_button.pack(side=tk.RIGHT, padx=5, pady=5)
+        # Configurações do botão de remover variável
+        self.vars_window.remove_var_button = tk.Button(self.vars_window.buttons_frame, text='Remover Variável')
+        self.vars_window.remove_var_button.pack(side=tk.RIGHT, padx=5, pady=5)
+        # self.vars_window.remove_var_button.configure(command=self.remove_var_form) # TODO
+        self.vars_window.remove_var_button.configure(state='disabled')
 
     def add_var_form(self):
-        self.add_var_window = tk.Tk()
-            # variáveis
-            # {
-            #    "id": "b60eee3e-523b-42c8-87a7-cd81a3cad55f",
-            #    "name": "v_hb_token",
-            #    "type": "password",
-            #    "value": "",
-            #    "isReadOnly": false,
-            #    "isTaskInput": true,
-            #    "taskInputLabel": "Insira seu Token do Diligent One",
-            #    "taskInputDescription": "",
-            #    "isTaskInputValueOptional": false
-            # }
+        self.add_var_window = tk.Toplevel(master=self.vars_window)
+
         # Configurações Principais
         window_width = 450
         window_height = 350
@@ -513,6 +533,7 @@ class D1Converter:
         self.add_var_window.Label4.configure(highlightcolor="#000000")
         self.add_var_window.Label4.configure(text='Somente Leitura?')
 
+        self.add_var_window.is_read_only = tk.BooleanVar()
         self.add_var_window.CheckButton4 = tk.Checkbutton(self.add_var_window)
         self.add_var_window.CheckButton4.place(relx=fixed_x_position_entries, rely=curr_y_position, height=30, width=20)
         self.add_var_window.CheckButton4.configure(background="#d9d9d9")
@@ -521,6 +542,7 @@ class D1Converter:
         self.add_var_window.CheckButton4.configure(foreground="#000000")
         self.add_var_window.CheckButton4.configure(highlightbackground="#d9d9d9")
         self.add_var_window.CheckButton4.configure(highlightcolor="#000000")
+        self.add_var_window.CheckButton4.configure(variable=self.add_var_window.is_read_only)
 
         curr_y_position += y_position_iteration
         self.add_var_window.Label5 = tk.Label(self.add_var_window)
@@ -537,7 +559,6 @@ class D1Converter:
         self.add_var_window.Label5.configure(highlightcolor="#000000")
         self.add_var_window.Label5.configure(text='É um Parâmetro do Robô?')
 
-        self.add_var_window.is_task_input_var = tk.BooleanVar()
         self.add_var_window.CheckButton5 = tk.Checkbutton(self.add_var_window)
         self.add_var_window.CheckButton5.place(relx=fixed_x_position_entries, rely=curr_y_position, height=30, width=20)
         self.add_var_window.CheckButton5.configure(background="#d9d9d9")
@@ -546,7 +567,9 @@ class D1Converter:
         self.add_var_window.CheckButton5.configure(foreground="#000000")
         self.add_var_window.CheckButton5.configure(highlightbackground="#d9d9d9")
         self.add_var_window.CheckButton5.configure(highlightcolor="#000000")
-        self.add_var_window.CheckButton5.configure(variable=self.add_var_window.is_task_input_var)
+        self.add_var_window.is_task_input = tk.BooleanVar()
+        self.add_var_window.CheckButton5.configure(variable=self.add_var_window.is_task_input)
+        self.add_var_window.CheckButton5.configure(command=self.add_var_window_input_properties_toggle)
 
         curr_y_position += y_position_iteration
         self.add_var_window.Label6 = tk.Label(self.add_var_window)
@@ -574,7 +597,7 @@ class D1Converter:
         self.add_var_window.Entry6.configure(insertbackground="#000000")
         self.add_var_window.Entry6.configure(selectbackground="#d9d9d9")
         self.add_var_window.Entry6.configure(selectforeground="black")
-        self.add_var_window.Entry6.configure(state="disabled")
+        self.add_var_window.Entry6.configure(state='readonly', readonlybackground='lightgray')
 
         curr_y_position += y_position_iteration
         self.add_var_window.Label7 = tk.Label(self.add_var_window)
@@ -602,8 +625,7 @@ class D1Converter:
         self.add_var_window.Entry7.configure(insertbackground="#000000")
         self.add_var_window.Entry7.configure(selectbackground="#d9d9d9")
         self.add_var_window.Entry7.configure(selectforeground="black")
-        self.add_var_window.Entry7.configure(state="disabled")
-
+        self.add_var_window.Entry7.configure(state='readonly', readonlybackground='lightgray')
 
         curr_y_position += y_position_iteration
         self.add_var_window.Label8 = tk.Label(self.add_var_window)
@@ -629,6 +651,8 @@ class D1Converter:
         self.add_var_window.CheckButton8.configure(highlightbackground="#d9d9d9")
         self.add_var_window.CheckButton8.configure(highlightcolor="#000000")
         self.add_var_window.CheckButton8.configure(state="disabled")
+        self.add_var_window.is_optional_value = tk.BooleanVar()
+        self.add_var_window.CheckButton8.configure(variable=self.add_var_window.is_optional_value)
 
         curr_y_position += y_position_iteration
         self.add_var_window.Button1 = tk.Button(self.add_var_window)
@@ -641,18 +665,20 @@ class D1Converter:
         self.add_var_window.Button1.configure(highlightbackground="#d9d9d9")
         self.add_var_window.Button1.configure(highlightcolor="#000000")
         self.add_var_window.Button1.configure(text='Salvar')
+        self.add_var_window.Button1.configure(command=self.add_var_window_save_button)
 
-        self.add_var_window.Button1 = tk.Button(self.add_var_window)
-        self.add_var_window.Button1.place(relx=230/window_width, rely=curr_y_position, height=30, width=100)
-        self.add_var_window.Button1.configure(activebackground="#d9d9d9")
-        self.add_var_window.Button1.configure(activeforeground="black")
-        self.add_var_window.Button1.configure(background="#d9d9d9")
-        self.add_var_window.Button1.configure(disabledforeground="#a3a3a3")
-        self.add_var_window.Button1.configure(foreground="#000000")
-        self.add_var_window.Button1.configure(highlightbackground="#d9d9d9")
-        self.add_var_window.Button1.configure(highlightcolor="#000000")
-        self.add_var_window.Button1.configure(text='Cancelar')
+        self.add_var_window.Button2 = tk.Button(self.add_var_window)
+        self.add_var_window.Button2.place(relx=230/window_width, rely=curr_y_position, height=30, width=100)
+        self.add_var_window.Button2.configure(activebackground="#d9d9d9")
+        self.add_var_window.Button2.configure(activeforeground="black")
+        self.add_var_window.Button2.configure(background="#d9d9d9")
+        self.add_var_window.Button2.configure(disabledforeground="#a3a3a3")
+        self.add_var_window.Button2.configure(foreground="#000000")
+        self.add_var_window.Button2.configure(highlightbackground="#d9d9d9")
+        self.add_var_window.Button2.configure(highlightcolor="#000000")
+        self.add_var_window.Button2.configure(text='Cancelar')
+        self.add_var_window.Button2.configure(command=self.add_var_window_close_button)
 
 if __name__ == "__main__":
-    d1c = D1Converter(title="Ferramenta de Conversão do D1 - v0.0.4", experimental=True)
-    d1c.main_window()
+    d1c = D1Converter(title="Ferramenta de Conversão do D1 - v0.0.5", experimental=True)
+    d1c.main_window_show()
