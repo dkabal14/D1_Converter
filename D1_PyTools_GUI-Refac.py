@@ -6,6 +6,7 @@ import os
 import subprocess
 from typing import Literal
 import uuid
+import json
 
 class D1Converter:
     def __init__(self, title, experimental=False):
@@ -339,11 +340,11 @@ class D1Converter:
             self.main_window.Button4.configure(highlightbackground="#d9d9d9")
             self.main_window.Button4.configure(highlightcolor="#000000")
             self.main_window.Button4.configure(text='''Variáveis''')
-            self.main_window.Button4.configure(command=self.vars_window)
+            self.main_window.Button4.configure(command=self.vars_window_show)
 
         self.main_window.mainloop()
 
-    def vars_window(self):
+    def vars_window_show(self):
         
         self.vars_window = tk.Toplevel(master=self.main_window)
 
@@ -386,7 +387,7 @@ class D1Converter:
         # Configurações do botão de criar json
         self.vars_window.create_json_button = tk.Button(self.vars_window.buttons_frame, text='Criar JSON')
         self.vars_window.create_json_button.pack(side=tk.LEFT, padx=5, pady=5)
-        # self.vars_window.create_json_button.configure(command=self.create_json_form)
+        self.vars_window.create_json_button.configure(command=self.create_json_form)
 
         # Configurações do botão de carregar json
         self.vars_window.load_json_button = tk.Button(self.vars_window.buttons_frame, text='Carregar JSON')
@@ -416,6 +417,26 @@ class D1Converter:
         self.vars_window.remove_var_button.pack(side=tk.RIGHT, padx=5, pady=5)
         # self.vars_window.remove_var_button.configure(command=self.remove_var_form) # TODO
         self.vars_window.remove_var_button.configure(state='disabled')
+
+    def create_json_form(self):
+
+        # TODO: Open file selection dialog to select the JSON file to create
+        # TODO: Create the json file using src/smp/sample_vars.json as a template
+        # TODO: Change the variable is_json_loaded to True
+
+        self.vars_json_filepath = filedialog.asksaveasfilename(confirmoverwrite=True, defaultextension='.json', filetypes=[('JSON Files', '*.json')], title='Salvar JSON de Variáveis do D1')
+        
+        with open(f"{self.root_dir}/src/smp/sample_vars.json", 'r', encoding='utf-8') as sample_file:
+            sample_json = json.load(sample_file)
+        
+        print(sample_json)
+
+        # if self.vars_json_filepath:
+        #     self.vars_window.is_json_loaded.set(True)
+        #     self.vars_window.save_json_button.configure(state='normal')
+        #     self.vars_window.add_var_button.configure(state='normal')
+        #     self.vars_window.edit_var_button.configure(state='normal')
+        #     self.vars_window.remove_var_button.configure(state='normal')
 
     def add_var_form(self):
         self.add_var_window = tk.Toplevel(master=self.vars_window)
