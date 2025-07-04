@@ -23,7 +23,7 @@ Responderemos o mais breve possível.
 A conversão não abrange as variáveis (parâmetros) do robô Python, sendo necessária a declaração manual.
 
 
-# Bibliotecas presentes no D1
+## Bibliotecas presentes no D1
 
 
 <table id="21fb8813-98f7-80eb-829f-f0a983c2c887" class="simple-table">
@@ -205,3 +205,9 @@ if not LOCAL:
     #Adicionar todos módulos manualmente
     import sklearn
 ```
+
+## Time Responsável
+
+- Diego Sousa
+- Lucas Reis
+- Matheus Marques 
